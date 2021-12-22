@@ -13,7 +13,16 @@ Recommend set up the environment using Anaconda
 - [PyRep](https://github.com/stepjam/PyRep)
 
 Require CoppeliaSim(4.1) for running the simulation reconstruction.
+
 Codes are tested on Ubuntu 20.04.
+
+### Dataset
+
+Download the following dataset and extract in dataset folder.
+
+1. [Baxter wobbler dataset](https://drive.google.com/file/d/1UlbUgTQFce4Bqci0im8ieCTvXa_Ylr0j/view)
+2. [Baxter poses dataset](https://drive.google.com/file/d/19_PdlJw-uOlUGS5Vp6oK5tcKXiMD-QUQ/view)
+
 
 ### Keypoint Estimation
 
