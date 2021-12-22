@@ -9,5 +9,10 @@ Recommend set up the environment using Anaconda ("environment.yml" provides an e
 
 - Python(3.6)
 - PyTorch(1.10.0)
-- Deeplabcut(2.0)
+- Deeplabcut(2.0+)
 
+
+
+## Notes
+
+We are still preparing the code for Boston Dynamic Spot and will release the code soon!

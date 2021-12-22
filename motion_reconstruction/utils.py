@@ -7,9 +7,13 @@ import json
 def get_coor_by_P(k_param, v_pos):
     
     # find the field of view for x and y axis
-    P = np.array([[k_param[0], 0.0, k_param[2]],
-                  [0.0, k_param[1], k_param[3]],
-                  [0.0, 0.0, 1.0]])
+
+    P = np.zeros((3,3)).astype(object)
+    P[0,0] = k_param[0]
+    P[0,2] = k_param[2]
+    P[1,1] = k_param[1]
+    P[1,2] = k_param[3]
+    P[2,2] = 1.0
     x = P @ v_pos.reshape((3,1))
     x = x/x[2]
     x = x[:2].reshape(-1)
@@ -25,10 +29,24 @@ def T_from_DH(alp,a,d,the):
     '''
     Transformation matrix fron DH
     '''
-    T = np.array([[torch.cos(the), -torch.sin(the), 0, a],
-                [torch.sin(the)*np.cos(alp), torch.cos(the)*np.cos(alp), -np.sin(alp), -d*np.sin(alp)],
-                [torch.sin(the)*np.sin(alp), torch.cos(the)*np.sin(alp), np.cos(alp), d*np.cos(alp)],
-                [0,0,0,1]])
+    T = np.zeros((4,4)).astype(object)
+    T[0,0] = torch.cos(the)
+    T[0,1] = -torch.sin(the)
+    T[0,2] = 0
+    T[0,3] = a
+    T[1,0] = torch.sin(the)*np.cos(alp)
+    T[1,1] = torch.cos(the)*np.cos(alp)
+    T[1,2] = -np.sin(alp)
+    T[1,3] = -d*np.sin(alp)
+
+    T[2,0] = torch.sin(the)*np.sin(alp)
+    T[2,1] = torch.cos(the)*np.sin(alp)
+    T[2,2] = np.cos(alp)
+    T[2,3] = d*np.cos(alp)
+    T[3,0] = 0
+    T[3,1] = 0
+    T[3,2] = 0
+    T[3,3] = 1
     return T
 
 def get_bl_T_Jn(n, theta):
@@ -135,7 +153,7 @@ def axi_angle_to_rot_matrix(k):
     tmp2 =  k[0]*s
     m21 = tmp1 + tmp2
     m12 = tmp1 - tmp2
-    R = np.zeros((3,3)).astype(np.object)
+    R = np.zeros((3,3)).astype(object)
     R[0,0] = m00
     R[0,1] = m01
     R[0,2] = m02
