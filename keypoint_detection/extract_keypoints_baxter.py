@@ -93,7 +93,7 @@ elif args.dataset == "baxter_poses":
     for i in range(len(img_list)):
         file_name = img_list[i]
         img = cv2.imread(file_name)
-        imgScale = 1
+        imgScale = 0.25
         newX,newY = img.shape[1]*imgScale, img.shape[0]*imgScale
         resized_img = cv2.resize(img,(int(newX),int(newY)))
 

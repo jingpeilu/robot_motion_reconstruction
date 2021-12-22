@@ -17,7 +17,7 @@ n = kp_2d.shape[0]
 # initialization
 x_t = np.random.uniform(low = [-0.2, -0.6, -0.2,  0.6, -0.1, 1.1, -0.1],
                   high = [ 0.2, -0.4,  0.2,  0.8,  0.1, 1.3,  0.2], 
-                  size = (120,7))
+                  size = (n,7))
 x_t = torch.tensor(x_t)
 #x_t = x_t.to(device='cuda')
 k_param = torch.tensor([9.42658407e+02, 9.42658407e+02, 1.02400000e+03, 7.68000000e+02])
@@ -104,7 +104,7 @@ for num_loop in range(args.n_l):
     
     # optmizing the camera parameters
     for itr in range(args.n_c):
-        lr_k = 0.0001
+        lr_k = 0.00001
         lr_c = 0.0001
         
         k_param.requires_grad_(True)    
