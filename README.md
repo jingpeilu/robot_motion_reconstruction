@@ -12,7 +12,7 @@ Recommend set up the environment using Anaconda.
 - [Deeplabcut(2.0+)](https://github.com/DeepLabCut/DeepLabCut)
 - [PyRep](https://github.com/stepjam/PyRep)
 
-Require CoppeliaSim(4.1) for running the simulation reconstruction.
+Require CoppeliaSim(4.1) for running the robot simulation.
 
 Codes are tested on Ubuntu 20.04.
 
