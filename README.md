@@ -46,9 +46,13 @@ python state_estimation_baxter_poses.py [--n_l] [--n_q] [--n_c]
 
 ### Reconstruction in Simulation
 
-See ipynotebooks in simulation folder for reconstructing robot motion in simulation.
+```simulation/Baxter_wobbler.ipynb ```: demonstration of motion reconstruction for Baxter wobbler dataset.
+
+```simulation/Baxter_poses.ipynb ```: demonstration of motion reconstruction for Baxter poses dataset.
+
+```simulation/kuka.ipynb ```: demonstration of motion reconstruction for Baxter datasets on Kuka robot arm.
 
 
 ## Notes
 
-The code for Boston Dynamic Spot will be released soon!
+TODO: The code for Boston Dynamic Spot will be released soon!
