@@ -9,7 +9,7 @@ Recommend set up the environment using Anaconda.
 
 - Python(3.8)
 - PyTorch(1.10.0)
-- Deeplabcut(2.0+)
+- [Deeplabcut(2.0+)](https://github.com/DeepLabCut/DeepLabCut)
 - [PyRep](https://github.com/stepjam/PyRep)
 
 Require CoppeliaSim(4.1) for running the simulation reconstruction.
