@@ -5,7 +5,7 @@ Website: https://sites.google.com/ucsd.edu/robotmotionreconstruction/home
 ## Usage
 
 ### Dependencies
-Recommend set up the environment using Anaconda
+Recommend set up the environment using Anaconda.
 
 - Python(3.8)
 - PyTorch(1.10.0)
