@@ -46,7 +46,7 @@ python state_estimation_baxter_poses.py [--n_l] [--n_q] [--n_c]
 
 ### Reconstruction in Simulation
 
-See ipynotebooks for reconstructing robot motion in simulation.
+See ipynotebooks in simulation folder for reconstructing robot motion in simulation.
 
 
 ## Notes
