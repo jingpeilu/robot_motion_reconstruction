@@ -10,9 +10,10 @@ Recommend set up the environment using Anaconda
 - Python(3.8)
 - PyTorch(1.10.0)
 - Deeplabcut(2.0+)
-- Pyrep
+- [PyRep](https://github.com/stepjam/PyRep)
 
 Require CoppeliaSim(4.1) for running the simulation reconstruction.
+Codes are tested on Ubuntu 20.04.
 
 ### Keypoint Estimation
 
