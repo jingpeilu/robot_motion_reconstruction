@@ -12,7 +12,7 @@ Baxter poses dataset:
 python extract_keypoints_baxter.py --dataset baxter_poses
 ```
 
-See keypoint_detection.ipynb for visualizing the keypoint detection.
+See jupyter notebooks for visualizing the keypoint detection.
 
 
 For training the keypoint detector, see "https://github.com/jingpeilu/keypoint_optimization" for details. 
