@@ -10,13 +10,14 @@ Recommend set up the environment using Anaconda.
 - Python(3.8)
 - PyTorch(1.10.0)
 - [Deeplabcut(2.0+)](https://github.com/DeepLabCut/DeepLabCut)
-- [PyRep](https://github.com/stepjam/PyRep)
 - Numpy(1.20.3)
 - Transforms3d
 
-Require CoppeliaSim(4.1) for running the robot simulation.
+The following packages and software are required for running the robot simulation.
+- [PyRep](https://github.com/stepjam/PyRep)
+- CoppeliaSim(4.1)
 
-Codes are tested on Ubuntu 20.04.
+Code is tested on Ubuntu 20.04.
 
 ### Dataset
 
