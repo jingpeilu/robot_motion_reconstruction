@@ -25,7 +25,7 @@ Download the following dataset and extract in dataset folder.
 2. [Baxter poses dataset](https://drive.google.com/file/d/19_PdlJw-uOlUGS5Vp6oK5tcKXiMD-QUQ/view)
 
 
-### Keypoint Estimation
+### Keypoint Extraction
 
 Extracting keypoints from Baxter wobbler dataset:
 
