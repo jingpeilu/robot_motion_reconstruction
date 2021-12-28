@@ -11,6 +11,7 @@ Recommend set up the environment using Anaconda.
 - PyTorch(1.10.0)
 - [Deeplabcut(2.0+)](https://github.com/DeepLabCut/DeepLabCut)
 - [PyRep](https://github.com/stepjam/PyRep)
+- Numpy(1.20.3)
 
 Require CoppeliaSim(4.1) for running the robot simulation.
 
