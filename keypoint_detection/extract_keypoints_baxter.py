@@ -98,7 +98,7 @@ elif args.dataset == "baxter_poses":
         resized_img = cv2.resize(img,(int(newX),int(newY)))
 
         results = kp_detector.predict_single_image(resized_img)
-        points_predicted = results[:,:2] * 4
+        points_predicted = results[:,:2] * (1/imgScale)
         points_predicted = points_predicted.astype(int)
         predictions[i] = points_predicted
 
