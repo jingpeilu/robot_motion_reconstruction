@@ -68,7 +68,8 @@ if args.dataset == "spot_dance":
         ###save imgs for visualization###
 
         #scores = results[:,2]
-        #img = kp_detector.overwrite_image(img, points_predicted, scores)
+        #points_predicted_ori = results[:,:2] * (1/imgScale)
+        #img = kp_detector.overwrite_image(img, points_predicted_ori, scores)
         #img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         #plt.imsave("test/%d.png"%i , img)
 

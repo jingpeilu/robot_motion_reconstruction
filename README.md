@@ -68,4 +68,8 @@ python state_estimation_baxter_poses.py [--n_l] [--n_q] [--n_c]
 
 ## Notes
 
-TODO: The code for Boston Dynamic Spot will be released soon!
+TODO: 
+
+1. The code for Boston Dynamic Spot will be released soon!
+
+2. Bad initialization might hurt the estimation performance. This can be avoided by providing a warm start. We will provide a way for warm start.
