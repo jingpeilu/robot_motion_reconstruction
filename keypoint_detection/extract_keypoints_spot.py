@@ -89,7 +89,11 @@ if args.dataset == "spot_dance":
        [-4.2300019e-01, -2.6542693e-08,  4.4996142e-03],
        [ 0.0000000e+00,  0.0000000e+00,  0.0000000e+00],
        [ 2.2300006e-01,  3.9115548e-08,  8.0500066e-02],
-       [-2.2300011e-01, -2.8405339e-08,  8.0499947e-02]])
+       [-2.2300011e-01, -2.8405339e-08,  8.0499947e-02],
+       [ 2.9732162e-01,  1.6644900e-01,  2.5125742e-03],
+       [ 2.9795051e-01, -1.6580009e-01, -1.2755394e-05],
+       [-2.9807025e-01,  1.6573673e-01, -8.9317560e-04],
+       [-2.9735273e-01, -1.6615444e-01, -1.6980767e-03]])
 
 
     prediction_vecs = np.zeros((predictions.shape[0],6))
@@ -97,7 +101,7 @@ if args.dataset == "spot_dance":
 
         # keypoint 2d position
         points_predicted = predictions[i]
-        points_2d = points_predicted[[0,1,2,3,4]]
+        points_2d = points_predicted[[0,1,2,3,4,5,8,11,14]]
 
         # using EPnP to find the cam-to-base transform
         retval,rvec,tvec = cv2.solvePnP(points_3d,points_2d.astype(float),P,distCoeffs = None, flags = 1)
