@@ -11,7 +11,7 @@ parser.add_argument('--n_c', type=int, default = 5, help='number of iteration fo
 args = parser.parse_args()
 
 w_q = 10
-w_c = 10
+w_c = 1
 
 kp_2d = np.load("../keypoint_detection/outputs/spot_dance_2d_keypoints.npy")[:,5:]
 b_T_cam_vecs = np.load("../keypoint_detection/outputs/spot_dance_extrinsic.npy")
