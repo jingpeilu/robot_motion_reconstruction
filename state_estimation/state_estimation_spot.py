@@ -13,6 +13,9 @@ args = parser.parse_args()
 w_q = 10
 w_c = 1
 
+dtype = torch.float
+device = torch.device("cpu")
+
 kp_2d = np.load("../keypoint_detection/outputs/spot_dance_2d_keypoints.npy")[:,5:]
 b_T_cam_vecs = np.load("../keypoint_detection/outputs/spot_dance_extrinsic.npy")
 n = kp_2d.shape[0]
@@ -21,13 +24,9 @@ n = kp_2d.shape[0]
 # initialization
 x_t = np.array([0.0, 0.5, -1.0, 0.0, 0.5, -1.0, 0.0, 0.5, -1.0, 0.0, 0.5, -1.0])
 x_t = np.tile(x_t,(n,1))
-x_t = torch.tensor(x_t)
-#x_t = x_t.to(device='cuda')
-k_param = torch.tensor(np.pi/3)
-
-#k_param = k_param.to(device='cuda')
-b_T_cam_torch = torch.tensor(b_T_cam_vecs)
-#b_T_cam_torch = b_T_cam_torch.to(device='cuda')
+x_t = torch.tensor(x_t, device=device, dtype=dtype, requires_grad=True)
+k_param = torch.tensor(np.pi/3, device=device, dtype=dtype, requires_grad=True)
+b_T_cam_torch = torch.tensor(b_T_cam_vecs, device=device, dtype=dtype, requires_grad=True)
 
 
 def loss_fn(kp_2d, proj_kp, x_t, b_T_cam_torch , w_q, w_c):
@@ -78,7 +77,6 @@ for num_loop in range(args.n_l):
     # optmizing the joint states
     for itr in range(args.n_q):
         lr = 0.0001
-        x_t.requires_grad_(True)
 
 
         proj_kp = torch.zeros((n,12,2))
@@ -99,24 +97,22 @@ for num_loop in range(args.n_l):
         #print(itr)
         print("loss:" + str(float(z)))
         z.backward()
-        x_grad = torch.nan_to_num(x_t.grad.data)
-        x_t = x_t.clone().detach()
-        x_t = x_t - lr*x_grad
-        #print(torch.max(torch.abs(x_grad)))
-        #print(torch.max(torch.abs(x_t)))
+        with torch.no_grad():
+            x_t -= lr*torch.nan_to_num(x_t.grad)
+            #print(torch.max(torch.abs(x_grad)))
+            #print(torch.max(torch.abs(x_t)))
+            
+            x_t.grad = None
+        
         print("---------------------")
 
-    np.save("outputs/spot_x_itr%d.npy" % num_loop,x_t.detach().numpy())
+    #np.save("outputs/spot_x_itr%d.npy" % num_loop,x_t.detach().numpy())
     
     
     # optmizing the camera parameters
     for itr in range(args.n_c):
         lr_k = 0.00001
         lr_c = 0.0001
-        
-        k_param.requires_grad_(True)    
-        b_T_cam_torch.requires_grad_(True)   
-
 
 
         proj_kp = torch.zeros((n,12,2))
@@ -137,16 +133,18 @@ for num_loop in range(args.n_l):
         #print(itr)
         print("loss:" + str(float(z)))
         z.backward()
-        k_grad = torch.nan_to_num(k_param.grad.data)
-        b_T_cam_grad = torch.nan_to_num(b_T_cam_torch.grad.data)
-        k_param = k_param.clone().detach()    
-        k_param = k_param - lr_k*k_grad
-        b_T_cam_torch = b_T_cam_torch.clone().detach()    
-        b_T_cam_torch = b_T_cam_torch - lr_c*b_T_cam_grad
+
+        with torch.no_grad():
+            k_param -= lr_k*torch.nan_to_num(k_param.grad)
+            b_T_cam_torch -= lr_c*torch.nan_to_num(b_T_cam_torch.grad)
+
+            k_param.grad = None
+            b_T_cam_torch.grad = None
+
         print("---------------------")
 
-    np.save("outputs/spot_k_itr%d.npy" % num_loop ,k_param.detach().numpy())
-    np.save("outputs/spot_c_itr%d.npy" % num_loop ,b_T_cam_torch.detach().numpy())
+    #np.save("outputs/spot_k_itr%d.npy" % num_loop ,k_param.detach().numpy())
+    #np.save("outputs/spot_c_itr%d.npy" % num_loop ,b_T_cam_torch.detach().numpy())
     
     if z.detach().numpy() < 10:
             break
