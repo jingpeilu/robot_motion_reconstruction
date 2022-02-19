@@ -106,7 +106,7 @@ for num_loop in range(args.n_l):
         
         print("---------------------")
 
-    #np.save("outputs/spot_x_itr%d.npy" % num_loop,x_t.detach().numpy())
+    np.save("outputs/spot_x_itr%d.npy" % num_loop,x_t.detach().numpy())
     
     
     # optmizing the camera parameters
@@ -143,8 +143,8 @@ for num_loop in range(args.n_l):
 
         print("---------------------")
 
-    #np.save("outputs/spot_k_itr%d.npy" % num_loop ,k_param.detach().numpy())
-    #np.save("outputs/spot_c_itr%d.npy" % num_loop ,b_T_cam_torch.detach().numpy())
+    np.save("outputs/spot_k_itr%d.npy" % num_loop ,k_param.detach().numpy())
+    np.save("outputs/spot_c_itr%d.npy" % num_loop ,b_T_cam_torch.detach().numpy())
     
     if z.detach().numpy() < 10:
             break

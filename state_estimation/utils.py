@@ -8,7 +8,7 @@ def get_coor_by_P(k_param, v_pos):
     
     # find the field of view for x and y axis
 
-    P = np.zeros((3,3)).astype(object)
+    P = torch.zeros((3,3))
     P[0,0] = k_param[0]
     P[0,2] = k_param[2]
     P[1,1] = k_param[1]
@@ -29,20 +29,20 @@ def T_from_DH(alp,a,d,the):
     '''
     Transformation matrix fron DH
     '''
-    T = np.zeros((4,4)).astype(object)
+    T = torch.zeros((4,4))
     T[0,0] = torch.cos(the)
     T[0,1] = -torch.sin(the)
     T[0,2] = 0
     T[0,3] = a
-    T[1,0] = torch.sin(the)*np.cos(alp)
-    T[1,1] = torch.cos(the)*np.cos(alp)
-    T[1,2] = -np.sin(alp)
-    T[1,3] = -d*np.sin(alp)
+    T[1,0] = torch.sin(the)*torch.cos(alp)
+    T[1,1] = torch.cos(the)*torch.cos(alp)
+    T[1,2] = -torch.sin(alp)
+    T[1,3] = -d*torch.sin(alp)
 
-    T[2,0] = torch.sin(the)*np.sin(alp)
-    T[2,1] = torch.cos(the)*np.sin(alp)
-    T[2,2] = np.cos(alp)
-    T[2,3] = d*np.cos(alp)
+    T[2,0] = torch.sin(the)*torch.sin(alp)
+    T[2,1] = torch.cos(the)*torch.sin(alp)
+    T[2,2] = torch.cos(alp)
+    T[2,3] = d*torch.cos(alp)
     T[3,0] = 0
     T[3,1] = 0
     T[3,2] = 0
@@ -57,22 +57,22 @@ def get_bl_T_Jn(n, theta):
     n = 8 for EE to base
     '''
     assert n in [0,2,4,6,8]
-    bl_T_0 = np.array([[1,0,0,0],
+    bl_T_0 = torch.tensor([[1,0,0,0],
                     [0,1,0,0],
                     [0,0,1,0.27035],
                     [0,0,0,1]])
-    T_7_ee = np.array([[1,0,0,0],
+    T_7_ee = torch.tensor([[1,0,0,0],
                     [0,1,0,0],
                     [0,0,1,0.3683],
                     [0,0,0,1]])
 
-    T_0_1 = T_from_DH(0,0,0,theta[0])
-    T_1_2 = T_from_DH(-np.pi/2,0.069,0,theta[1]+np.pi/2)
-    T_2_3 = T_from_DH(np.pi/2,0,0.36435,theta[2])
-    T_3_4 = T_from_DH(-np.pi/2,0.069,0,theta[3])
-    T_4_5 = T_from_DH(np.pi/2,0,0.37429,theta[4])
-    T_5_6 = T_from_DH(-np.pi/2,0.010,0,theta[5])
-    T_6_7 = T_from_DH(np.pi/2,0,0,theta[6])
+    T_0_1 = T_from_DH(torch.tensor(0.0),      torch.tensor(0.0),   torch.tensor(0.0),    theta[0])
+    T_1_2 = T_from_DH(torch.tensor(-np.pi/2), torch.tensor(0.069), torch.tensor(0.0),    theta[1]+np.pi/2)
+    T_2_3 = T_from_DH(torch.tensor(np.pi/2),  torch.tensor(0.0),   torch.tensor(0.36435),theta[2])
+    T_3_4 = T_from_DH(torch.tensor(-np.pi/2), torch.tensor(0.069), torch.tensor(0.0),    theta[3])
+    T_4_5 = T_from_DH(torch.tensor(np.pi/2),  torch.tensor(0.0),   torch.tensor(0.37429),theta[4])
+    T_5_6 = T_from_DH(torch.tensor(-np.pi/2), torch.tensor(0.010), torch.tensor(0.0),    theta[5])
+    T_6_7 = T_from_DH(torch.tensor(np.pi/2),  torch.tensor(0.0),   torch.tensor(0.0),    theta[6])
     if n == 0:
         T = T_0_1
     elif n == 2:
@@ -104,7 +104,7 @@ def get_3d_position_to_bl( p_id,theta):
 
     position_to_joint, parent_joint = get_position_wrt_joints(p_id)
     # list to p_vec
-    position_to_joint = np.hstack((position_to_joint,[1])).reshape((4,1))
+    position_to_joint = torch.tensor(np.hstack((position_to_joint,[1])).reshape((4,1)))
     if parent_joint == "J0":
         position_to_bl = get_bl_T_Jn(0,theta) @ position_to_joint
     elif parent_joint == "J2":
@@ -123,14 +123,16 @@ def proj(x, b_T_cam, k_param):
     # projecting keypoints to image
     # using [0,4,7,9,13,15,18] keypoints from keypoint json file
     # skipping reading from file process to speed up the code
-    p_0 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(0,x) @ np.array([0,0,0,1]).reshape((4,1)) ))
-    p_1 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(2,x) @ np.array([-0.02700508, 0.04893792, -0.0228409,1]).reshape((4,1)) ))
-    p_2 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(2,x) @ np.array([0.05922043, -0.18791741, -0.00197341,1]).reshape((4,1)) ))
-    p_3 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(4,x) @ np.array([0.0, 0.0, 0.0,1]).reshape((4,1)) ))
-    p_4 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(4,x) @ np.array([-0.02277625, -0.18333554, -0.01677856,1]).reshape((4,1)) ))
-    p_5 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(6,x) @ np.array([0.0, 0.0, 0.0 ,1]).reshape((4,1)) ))
-    p_6 = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(8,x) @ np.array([-0.00543057919, 0.000110387802, -0.112797022,1]).reshape((4,1)) ))
-    return np.stack((p_0,p_1,p_2,p_3,p_4,p_5,p_6))
+    p = torch.zeros((7,2))
+    p[0] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(0,x) @ torch.tensor([0.0,0.0,0.0,1.0]).reshape((4,1)) ))
+    p[1] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(2,x) @ torch.tensor([-0.02700508, 0.04893792, -0.0228409,1]).reshape((4,1)) ))
+    p[2] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(2,x) @ torch.tensor([0.05922043, -0.18791741, -0.00197341,1]).reshape((4,1)) ))
+    p[3] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(4,x) @ torch.tensor([0.0, 0.0, 0.0,1.0]).reshape((4,1)) ))
+    p[4] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(4,x) @ torch.tensor([-0.02277625, -0.18333554, -0.01677856,1]).reshape((4,1)) ))
+    p[5] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(6,x) @ torch.tensor([0.0, 0.0, 0.0 ,1.0]).reshape((4,1)) ))
+    p[6] = get_coor_by_P( k_param, dehomogenize_3d(b_T_cam @ get_bl_T_Jn(8,x) @ torch.tensor([-0.00543057919, 0.000110387802, -0.112797022,1]).reshape((4,1)) ))
+    return p
+
 
 def axi_angle_to_rot_matrix(k):
     angle = torch.norm(k)
@@ -153,7 +155,7 @@ def axi_angle_to_rot_matrix(k):
     tmp2 =  k[0]*s
     m21 = tmp1 + tmp2
     m12 = tmp1 - tmp2
-    R = np.zeros((3,3)).astype(object)
+    R = torch.zeros((3,3))
     R[0,0] = m00
     R[0,1] = m01
     R[0,2] = m02
