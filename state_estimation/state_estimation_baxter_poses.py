@@ -96,7 +96,7 @@ for num_loop in range(args.n_l):
             x_t.grad = None
         print("---------------------")
 
-    #np.save("outputs/x_itr%d.npy" % num_loop,x_t.detach().numpy())
+    np.save("outputs/baxter_poses_x_itr%d.npy" % num_loop,x_t.detach().numpy())
     
     # optmizing the camera parameters
     for itr in range(args.n_c):
@@ -130,8 +130,8 @@ for num_loop in range(args.n_l):
             b_T_cam_torch.grad = None
         print("---------------------")
 
-    #np.save("outputs/k_itr%d.npy" % num_loop ,k_param.detach().numpy())
-    #np.save("outputs/c_itr%d.npy" % num_loop ,b_T_cam_torch.detach().numpy())
+    np.save("outputs/baxter_poses_k_itr%d.npy" % num_loop ,k_param.detach().numpy())
+    np.save("outputs/baxter_poses_c_itr%d.npy" % num_loop ,b_T_cam_torch.detach().numpy())
     
     if z.detach().numpy() < 10:
             break
